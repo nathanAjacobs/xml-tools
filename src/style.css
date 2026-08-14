@@ -1,0 +1,255 @@
+/*
+ * Theming has three states: an explicit choice sets data-theme on <html>, and
+ * the default "system" state sets nothing, leaving prefers-color-scheme to
+ * decide. The dark palette is therefore declared twice — once behind the media
+ * query (guarded so an explicit "light" wins over a dark OS) and once behind
+ * data-theme="dark" (so an explicit "dark" wins over a light OS).
+ */
+:root {
+  --bg: #f6f7f9;
+  --surface: #ffffff;
+  --border: #d9dee5;
+  --text: #16181d;
+  --muted: #626b78;
+  --accent: #2d5bd7;
+  --accent-text: #ffffff;
+  --warn-bg: #fdf3e3;
+  --warn-border: #e6c98a;
+  --warn-text: #6b4a10;
+
+  --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+  --sans: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #14161a;
+    --surface: #1c1f25;
+    --border: #333a44;
+    --text: #e8eaee;
+    --muted: #99a2b0;
+    --accent: #7ea2ff;
+    --accent-text: #10131a;
+    --warn-bg: #33291a;
+    --warn-border: #6b5426;
+    --warn-text: #e8c98a;
+
+    color-scheme: dark;
+  }
+}
+
+:root[data-theme="dark"] {
+  --bg: #14161a;
+  --surface: #1c1f25;
+  --border: #333a44;
+  --text: #e8eaee;
+  --muted: #99a2b0;
+  --accent: #7ea2ff;
+  --accent-text: #10131a;
+  --warn-bg: #33291a;
+  --warn-border: #6b5426;
+  --warn-text: #e8c98a;
+
+  color-scheme: dark;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--sans);
+  line-height: 1.5;
+}
+
+main {
+  max-width: 52rem;
+  margin: 0 auto;
+  padding: 2rem 1rem 3rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+/* Below this width the title and the switch fight for the same row. */
+@media (max-width: 30rem) {
+  header {
+    flex-direction: column-reverse;
+    align-items: stretch;
+  }
+
+  .theme-switch {
+    align-self: flex-start;
+  }
+}
+
+h1 {
+  margin: 0 0 0.25rem;
+  font-size: 1.5rem;
+}
+
+.tagline {
+  margin: 0;
+  color: var(--muted);
+}
+
+/* Radio group styled as a segmented control, so the choice stays keyboard
+   navigable with arrow keys and readable to screen readers. */
+.theme-switch {
+  display: flex;
+  flex: none;
+  gap: 0.15rem;
+  margin: 0;
+  padding: 0.15rem;
+  border: 1px solid var(--border);
+  border-radius: 0.45rem;
+  background: var(--surface);
+}
+
+.theme-switch legend {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.theme-switch label {
+  padding: 0.25rem 0.55rem;
+  border-radius: 0.3rem;
+  font-size: 0.75rem;
+  text-transform: none;
+  letter-spacing: normal;
+  cursor: pointer;
+  user-select: none;
+}
+
+.theme-switch input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.theme-switch label:hover {
+  color: var(--text);
+}
+
+.theme-switch label:has(input:checked) {
+  background: var(--accent);
+  color: var(--accent-text);
+}
+
+.theme-switch label:has(input:focus-visible) {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 0.6rem;
+  padding: 0.85rem;
+}
+
+.panel-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 0.5rem;
+}
+
+label,
+.label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+textarea {
+  width: 100%;
+  min-height: 9rem;
+  resize: vertical;
+  padding: 0.7rem;
+  border: 1px solid var(--border);
+  border-radius: 0.4rem;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--mono);
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+textarea:focus-visible,
+button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+button {
+  border: 1px solid var(--accent);
+  border-radius: 0.35rem;
+  background: var(--accent);
+  color: var(--accent-text);
+  padding: 0.3rem 0.8rem;
+  font: inherit;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+button.ghost {
+  background: transparent;
+  border-color: var(--border);
+  color: var(--muted);
+}
+
+pre {
+  margin: 0;
+  padding: 0.7rem;
+  border: 1px solid var(--border);
+  border-radius: 0.4rem;
+  background: var(--bg);
+  overflow-x: auto;
+  font-family: var(--mono);
+  font-size: 0.9rem;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.notice {
+  margin: 0.6rem 0 0;
+  padding: 0.5rem 0.7rem;
+  border: 1px solid var(--warn-border);
+  border-radius: 0.4rem;
+  background: var(--warn-bg);
+  color: var(--warn-text);
+  font-size: 0.85rem;
+}
+
+footer {
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+footer p {
+  margin: 0;
+}
+
+footer code {
+  font-family: var(--mono);
+}

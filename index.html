@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>XML Text Escaper</title>
+    <meta
+      name="description"
+      content="Escape a plain string so it can be placed between two XML element tags."
+    />
+    <script>
+      // Runs before first paint so a stored theme does not flash the other one.
+      // Deliberately inline and duplicated from src/theme.ts: the module script
+      // is deferred until after the document renders.
+      try {
+        var stored = localStorage.getItem("xml-tools:theme");
+        if (stored === "light" || stored === "dark") {
+          document.documentElement.setAttribute("data-theme", stored);
+        }
+      } catch (e) {}
+    </script>
+  </head>
+  <body>
+    <main>
+      <header>
+        <div>
+          <h1>XML Text Escaper</h1>
+          <p class="tagline">
+            Paste any plain text and get back the version that is safe to place
+            between two XML element tags.
+          </p>
+        </div>
+
+        <fieldset class="theme-switch" id="theme-switch">
+          <legend>Color theme</legend>
+          <label>
+            <input type="radio" name="theme" value="system" checked />
+            <span>Auto</span>
+          </label>
+          <label>
+            <input type="radio" name="theme" value="light" />
+            <span>Light</span>
+          </label>
+          <label>
+            <input type="radio" name="theme" value="dark" />
+            <span>Dark</span>
+          </label>
+        </fieldset>
+      </header>
+
+      <section class="panel">
+        <div class="panel-head">
+          <label for="input">Plain text</label>
+          <button type="button" id="clear" class="ghost">Clear</button>
+        </div>
+        <textarea
+          id="input"
+          spellcheck="false"
+          autofocus
+          placeholder="Tom &#38; Jerry <3"
+        ></textarea>
+      </section>
+
+      <section class="panel">
+        <div class="panel-head">
+          <label for="output">Escaped XML text</label>
+          <button type="button" id="copy">Copy</button>
+        </div>
+        <textarea id="output" spellcheck="false" readonly></textarea>
+        <p id="notice" class="notice" hidden></p>
+      </section>
+
+      <section class="panel">
+        <div class="panel-head">
+          <span class="label">Preview in context</span>
+        </div>
+        <pre id="preview"><code></code></pre>
+      </section>
+
+      <footer>
+        <p>
+          Escapes <code>&#38;</code>, <code>&#60;</code> and <code>&#62;</code>,
+          and drops code points XML 1.0 cannot represent. Quotes are left alone
+          — they are only special inside attribute values. Everything runs in
+          your browser.
+        </p>
+      </footer>
+    </main>
+
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
